@@ -11,19 +11,26 @@
 <body>
 <header data-aos="fade-down">
   <div class="logo"><i class="fa-solid fa-rocket"></i> LearnWeb</div>
-  <nav>
-    <a href="#">Home</a>
-    <a href="#">Features</a>
-    <a href="#">Testimonials</a>
-    <a href="#contact">Contact</a>
-  </nav>
-  <div class="nav-actions">
-    <a href="#">Sign In</a>
-    <a href="#"style="border: 1px solid black; cursor: pointer;" class="btn">Get Started</a>
+  <div class="menu-toggle" id="menuToggle">
+    <i class="fa-solid fa-bars"></i>
+  </div>
+
+  <div class="nav-wrapper" id="navWrapper">
+    <nav>
+      <a href="#main" class="nav-link">Home</a>
+      <a href="#Features" class="nav-link">Features</a>
+      <a href="#Test" class="nav-link">Testimonials</a>
+      <a href="#contact" class="nav-link">Contact</a>
+    </nav>
+
+    <div class="nav-actions">
+      <a href="#">Sign In</a>
+      <a href="#" class="btn">Get Started</a>
+    </div>
   </div>
 </header>
 
-<section class="main">
+<section class="main" id="main">
   <div class="main-left" data-aos="fade-right">
     <div class="badge"><i class="fa-solid fa-star"></i> Learn HTML & CSS Today</div>
     <h1>Master Web<br>Development <span>From Scratch</span></h1>
@@ -48,7 +55,7 @@
   </div>
 </section>
 
-<section class="section">
+<section class="section" id="Features">
     <div data-aos="zoom-in-up">
     <span>Features</span>
  </div>
@@ -91,7 +98,7 @@
   </div>
 </section>
 
-<section class="section">
+<section class="section" id="Test">
   <h2 data-aos="fade-up">What Our Students Say</h2>
   <div data-aos="flip-left"
      data-aos-easing="ease-out-cubic"
@@ -166,7 +173,7 @@
   </button>
 </section>
 
-<section class="contact">
+<section class="contact" id="contact">
   <div class="contact-left" data-aos="fade-right">
     <h2>Get in Touch</h2>
     <p>
@@ -282,10 +289,63 @@ AOS.init({
     mirror: true,   
     offset: 120   
 });
+
+const menuToggle = document.getElementById("menuToggle");
+const navWrapper = document.getElementById("navWrapper");
+const menuIcon = menuToggle.querySelector("i");
+
+menuToggle.addEventListener("click", () => {
+  navWrapper.classList.toggle("active");
+
+  menuIcon.classList.toggle("fa-bars");
+  menuIcon.classList.toggle("fa-xmark");
+});
+
+document.querySelectorAll(".nav-link").forEach(link => {
+  link.addEventListener("click", (e) => {
+    e.preventDefault();
+
+    const targetId = link.getAttribute("href").substring(1);
+    const targetSection = document.getElementById(targetId);
+
+    if (targetSection) {
+      const offset = 80; 
+      const elementPosition = targetSection.getBoundingClientRect().top + window.pageYOffset;
+      window.scrollTo({
+        top: elementPosition - offset,
+        behavior: "smooth"
+      });
+    }
+
+    navWrapper.classList.remove("active");
+    menuIcon.classList.remove("fa-xmark");
+    menuIcon.classList.add("fa-bars");
+  });
+});
+
+function closeMobileMenu() {
+  navWrapper.classList.remove("active");
+  menuIcon.classList.remove("fa-xmark");
+  menuIcon.classList.add("fa-bars");
+}
+
+document.querySelectorAll(".nav-link").forEach(link => {
+  link.addEventListener("click", () => {
+    closeMobileMenu();
+  });
+});
+
+document.querySelectorAll(".nav-actions a").forEach(actionLink => {
+  actionLink.addEventListener("click", () => {
+    closeMobileMenu();
+  });
+});
+document.addEventListener("click", (e) => {
+  if (!navWrapper.contains(e.target) && !menuToggle.contains(e.target)) {
+    closeMobileMenu();
+  }
+});
 </script>
-
-
-
 
 </body>
 </html>
